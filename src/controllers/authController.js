@@ -4,7 +4,7 @@ const prisma = require('../database/prismaClient')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-//2. Crie a função loginUser com async (Mas sem lógica ainda)
+//2. Crie a função loginUser com async
 async function loginUser(req, res) {
     const { email, password } = req.body
     if (!email || !password) {
