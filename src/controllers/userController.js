@@ -1,5 +1,5 @@
 const prisma = require('../database/prismaClient')
-const bcrypt = require('bcryptjs') // 👈 importa o bcrypt
+const bcrypt = require('bcryptjs')
 
 async function createUser(req, res) {
   const { name, email, password } = req.body
@@ -13,20 +13,17 @@ async function createUser(req, res) {
     return res.status(409).json({ error: 'E-mail já cadastrado.' })
   }
 
-  // 🔐 Criptografa a senha antes de salvar
   const hashedPassword = await bcrypt.hash(password, 10)
 
   const user = await prisma.user.create({
-    data: { name, email, password: hashedPassword }
+    data: {
+      name,
+      email,
+      password: hashedPassword
+    }
   })
 
-  // 🔒 Retorna dados sem expor a senha
-  return res.status(201).json({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    createdAt: user.createdAt
-  })
+  return res.status(201).json(user)
 }
 
 async function getUsers(req, res) {

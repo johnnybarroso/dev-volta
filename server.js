@@ -1,16 +1,17 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
-const { PrismaClient } = require('@prisma/client')
+const userRoutes = require('./src/routes/userRoutes')
 
-const prisma = new PrismaClient()
 const app = express()
 
 app.use(cors())
-app.use(express.json())
+app.use(express.json()) // importante: habilita req.body em JSON
+
+app.use('/api', userRoutes)
 
 app.get('/', (req, res) => {
-  res.send('Servidor rodando')
+  res.send('Servidor rodando!')
 })
 
 app.listen(3000, () => {
