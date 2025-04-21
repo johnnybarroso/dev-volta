@@ -1,5 +1,6 @@
 const prisma = require('../database/prismaClient')
 const bcrypt = require('bcryptjs')
+const { loginUser } = require('./authController')
 
 async function createUser(req, res) {
   const { name, email, password } = req.body
@@ -33,5 +34,6 @@ async function getUsers(req, res) {
 
 module.exports = {
   createUser,
-  getUsers
+  getUsers,
+  loginUser
 }
