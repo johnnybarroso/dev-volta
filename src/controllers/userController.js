@@ -32,8 +32,34 @@ async function getUsers(req, res) {
   return res.json(users)
 }
 
+async function getProfile(req, res) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.userId // veio do middleware!
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true
+      }
+    })
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuário não encontrado." })
+    }
+
+    return res.json(user)
+  } catch (error) {
+    return res.status(500).json({ error: "Erro ao buscar perfil." })
+  }
+}
+
+
 module.exports = {
   createUser,
   getUsers,
-  loginUser
+  loginUser,
+  getProfile
 }

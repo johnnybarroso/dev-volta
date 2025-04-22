@@ -28,7 +28,31 @@ async function loginUser(req, res) {
     return res.json({ token })
 }
 
+//3. Pega o perfil para validação do token.
+async function getProfile(req, res) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: req.userId },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          createdAt: true
+        }
+      })
+  
+      if (!user) {
+        return res.status(404).json({ error: 'Usuário não encontrado' })
+      }
+  
+      return res.json(user)
+    } catch (error) {
+      return res.status(500).json({ error: 'Erro ao buscar perfil' })
+    }
+  }
+
 // 3. Exporte a função no final
 module.exports = {
-    loginUser
+    loginUser,
+    getProfile
 }
